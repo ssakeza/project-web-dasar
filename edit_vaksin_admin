@@ -1,0 +1,82 @@
+<?php
+session_start();
+include 'koneksi.php';
+
+$id_vaksin = $_GET['id'];
+
+// Ambil data mobil dari database
+$query = "SELECT * from vaksin WHERE id_vaksin = $id_vaksin";
+$result = mysqli_query($connect, $query);
+$vaksin = mysqli_fetch_assoc($result);
+
+if (!$vaksin) {
+    echo "Data vaksin tidak ditemukan.";
+    exit;
+}
+
+// Proses update
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $id        = $_POST['id_vaksin'];
+    $nama      = $_POST['nama_vaksin'];
+    $umur_min  = $_POST['umur_min'];
+    $umur_max  = $_POST['umur_max'];
+    
+    $sql = "UPDATE vaksin SET 
+                id_vaksin = '$id',
+                nama_vaksin = '$nama',
+                umur_min = '$umur_min',
+                umur_max = '$umur_max'
+            WHERE id_vaksin = '$id_vaksin'";
+
+    if (mysqli_query($connect, $sql)) {
+        echo '<script>alert("Data vaksin berhasil diperbarui!"); window.location.href = "dashboard_admin.php";</script>';
+        exit;
+    } else {
+        echo "Gagal memperbarui data: " . mysqli_error($connect);
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit vaksin (Admin)</title>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Edit Mobil (Admin)</h2>
+        <form method="POST" action="">
+            <p><strong>Diinput oleh:</strong> <?= htmlspecialchars($_SESSION['username'] ?? '') ?></p>
+
+            <input type="hidden" name="original_id_vaksin" value="<?= $id_vaksin ?>">
+            <label>no</label>
+            <input type="text" name="id_vaksin" value="<?=($vaksin['id_vaksin']) ?>" required>
+
+            <label>nama vaksin</label>
+            <input type="text" name="nama_vaksin" value="<?=($vaksin['nama_vaksin']) ?>" required>
+
+            <label>umur min</label>
+            <input type="number" class="umur_min" name="umur_min" value="<?= $vaksin['umur_min'] ?>" required>
+
+            <label>umur max</label>
+            <input type="number" class="umur_max" name="umur_max" value="<?= $vaksin['umur_max'] ?>" required>
+            <div class="button-group">
+                <button type="button" class="btn-kembali" onclick="history.back()">Kembali</button>
+                <button type="submit" class="btn-submit">Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Mencegah user dapat input selain angka
+        document.querySelectorAll('.no-exponent').forEach(input => {
+            input.addEventListener('keydown', e => {
+                if (["e", "E", "+", "-"].includes(e.key)) e.preventDefault();
+            });
+        });
+    </script>
+</body>
+
+</html>
