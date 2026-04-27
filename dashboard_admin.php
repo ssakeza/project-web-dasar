@@ -21,35 +21,39 @@ if (!$result) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     <title>Dashboard Admin</title>
 </head>
-
 <body>
-    <div class="sidebar">
-        <h1>vaksin</h1>
-        <a href="dashboard_admin.php" class="navbar">Dashboard</a>
-        <a href="logout.php" class="navbar">Keluar</a>
+  <div class="row">
+    <div class="col-3">
+    <div class="brand">
+        <div class="logo">
+        <img src="image/logo.png">
+    </div>
+    <h1>Vaksin</h1>
+</div>
+    <a href="dashboard_admin.php" class="navbar">Dashboard</a>
+    <a href="dokter.php" class="navbar">Data Dokter</a>
+    <a href="logout.php" class="navbar">Keluar</a>
     </div>
 
-    <div class="main-content">
+    <div class="col-9">
         <div class="header">
-            <div class="caption">
                 <h4>Dashboard Admin</h4>
-            </div>
-            <div class="profil">
                 <h2>Selamat Datang</h2>
-            </div>
         </div>
-
-
-        <div class="table-container">
+        <div class="table">
             <table>
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Nama vaksin</th>
-                        <th>umur min</th>
-                        <th>umur max</th>
+                        <th>Deskripsi</th>
+                        <th>Umur Minimal</th>
+                        <th>Umur Maximal</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,6 +64,7 @@ if (!$result) {
                         <tr>
                             <td><?= $row['id_vaksin'] ?></td>
                             <td><?= $row['nama_vaksin'] ?></td>
+                            <td><?= $row['deskripsi'] ?></td>
                             <td><?= $row['umur_min']  ?></td>
                             <td><?= $row['umur_max']  ?></td>
                             <td>
@@ -70,10 +75,12 @@ if (!$result) {
                     <?php endwhile; ?>
                 </tbody>
             </table>
-
+        </div>
+        <div class="link">
             <a href="tambah_vaksin_admin.php">Tambahkan data vaksin baru</a>
         </div>
     </div>
+  </div>
 </body>
 
 </html>
